@@ -1,0 +1,534 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Shubh Deepavali</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;600;800&display=swap">
+<style>
+/* Layout: full-bleed 3D night sky, greeting floats centre in tilting 3D, control dock at the foot. Single deliberate dark look. */
+:root{
+  --night:#0a0517; --ink:#fff4e0; --muted:rgba(255,244,224,.74);
+  --marigold:#ffb000; --kumkum:#e8283c; --peacock:#14b8a6; --glass:rgba(22,10,38,.58);
+  --line:rgba(255,176,0,.38);
+  --display:"Rozha One", "Noto Serif Devanagari", Georgia, serif;
+  --body:"Mukta", "Noto Sans Devanagari", system-ui, sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--night);color:var(--ink);font-family:var(--body);overflow:hidden}
+#gl,#spark{position:fixed;inset:0;width:100%;height:100%;display:block}
+#gl{z-index:1;touch-action:manipulation}
+#spark{pointer-events:none;z-index:2}
+#ui{position:fixed;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:space-between;align-items:center;gap:14px;
+  padding-block:calc(env(safe-area-inset-top,0px) + 14px) calc(env(safe-area-inset-bottom,0px) + 14px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  pointer-events:none;overflow-y:auto}
+.top{pointer-events:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pill{background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.stage{perspective:900px;width:100%;display:flex;justify-content:center}
+.hero{pointer-events:none;text-align:center;transform-style:preserve-3d;max-width:860px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.eyebrow{text-transform:uppercase;letter-spacing:.22em;font-size:13px;font-weight:600;color:var(--marigold);transform:translateZ(30px)}
+h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(3.1rem,13vw,8.6rem);line-height:1.18;text-wrap:balance;
+  background:linear-gradient(100deg,var(--marigold) 0%,#fff2b3 22%,#ff8a3d 40%,var(--kumkum) 55%,var(--marigold) 72%,#fff2b3 90%);
+  background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(255,150,0,.55));animation:shimmer 6s linear infinite;transform:translateZ(80px)}
+h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,5.4vw,2.8rem);color:var(--ink);transform:translateZ(50px);
+  text-shadow:0 0 18px rgba(232,40,60,.6)}
+.wish{margin:4px 0 0;max-width:46ch;font-size:clamp(1rem,2.6vw,1.2rem);line-height:1.55;color:var(--muted);transform:translateZ(25px);text-wrap:balance}
+.wish b{color:var(--ink);font-weight:800}
+#start{pointer-events:auto;margin-top:14px;font-family:var(--display);font-size:1.35rem;color:#2a1000;border:0;border-radius:999px;padding:13px 30px;cursor:pointer;
+  background:linear-gradient(180deg,#ffd35a,var(--marigold) 45%,#ff7a00);box-shadow:0 0 0 0 rgba(255,176,0,.6),0 10px 30px rgba(255,120,0,.45);
+  animation:pulse 1.8s ease-out infinite;transform:translateZ(60px)}
+#start:hover{filter:brightness(1.08)}
+.hint{font-size:13px;color:var(--muted);transform:translateZ(15px)}
+.dock{pointer-events:auto;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:820px}
+.chip{font-family:var(--body);font-weight:600;font-size:15px;color:var(--ink);background:var(--glass);border:1px solid var(--line);border-radius:999px;
+  padding:9px 15px;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:transform .15s,background .2s}
+.chip:hover{transform:translateY(-2px);background:rgba(60,25,70,.7)}
+.chip[aria-pressed="true"]{background:var(--marigold);color:#2a1000;border-color:var(--marigold)}
+#crazy{border-color:var(--kumkum)}
+#crazy[aria-pressed="true"]{background:var(--kumkum);color:#fff;border-color:var(--kumkum)}
+.namebox{display:flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 14px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.namebox label{font-size:14px;color:var(--muted)}
+.namebox input{width:9.5rem;max-width:40vw;background:transparent;border:0;color:var(--ink);font:600 15px var(--body);padding:6px 4px;outline:none}
+.namebox input::placeholder{color:rgba(255,244,224,.4)}
+button:focus-visible,.namebox:focus-within{outline:2px solid var(--peacock);outline-offset:2px}
+body.crazy h1{animation:shimmer 1s linear infinite,wobble .45s ease-in-out infinite alternate}
+body.crazy h2{animation:wobble .3s ease-in-out infinite alternate-reverse}
+@keyframes shimmer{to{background-position:300% 0}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,176,0,.6),0 10px 30px rgba(255,120,0,.45)}100%{box-shadow:0 0 0 22px rgba(255,176,0,0),0 10px 30px rgba(255,120,0,.45)}}
+@keyframes wobble{from{rotate:-3deg;scale:1}to{rotate:3deg;scale:1.06}}
+@media (max-width:520px){.chip{font-size:14px;padding:8px 12px}.hint{display:none}}
+@media (prefers-reduced-motion:reduce){h1,#start,body.crazy h1,body.crazy h2{animation:none}}
+</style>
+
+<canvas id="gl" aria-label="3D Diwali night with diyas, rangoli, lanterns and fireworks. Tap to launch rockets."></canvas>
+<canvas id="spark" aria-hidden="true"></canvas>
+
+<div id="ui">
+  <div class="top"><span class="pill" id="count">Lakshmi Puja · Sunday 8 November 2026</span></div>
+
+  <div class="stage">
+    <div class="hero" id="hero">
+      <div class="eyebrow">दीपोत्सव · Deepavali 2026</div>
+      <h1>शुभ दीपावली</h1>
+      <h2>Happy Diwali</h2>
+      <p class="wish">Wishing <b id="who">you</b> a year as bright as a thousand diyas, as sweet as a box of kaju katli, and louder than a 1000-wala ladi.</p>
+      <button id="start" type="button">Light the diya ✦ with music</button>
+      <div class="hint" id="hint">Tap anywhere in the sky to launch a rocket</div>
+    </div>
+  </div>
+
+  <div class="dock">
+    <button class="chip" id="snd" type="button" aria-pressed="false">♪ Music off</button>
+    <button class="chip" id="rocket" type="button">Rocket</button>
+    <button class="chip" id="ladi" type="button">1000-wala ladi</button>
+    <button class="chip" id="lanterns" type="button">Sky lanterns</button>
+    <button class="chip" id="rangoli" type="button">New rangoli</button>
+    <button class="chip" id="crazy" type="button" aria-pressed="false">Go crazy</button>
+    <div class="namebox"><label for="name">For</label><input id="name" type="text" placeholder="a name" maxlength="40" autocomplete="off"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s);
+const rand = (a, b) => a + Math.random() * (b - a);
+
+/* ---------------- name in the link ---------------- */
+const who = $('#who'), nameIn = $('#name');
+const readHash = () => { try { return decodeURIComponent(location.hash.slice(1)).replace(/-/g, ' ').trim(); } catch (e) { return ''; } };
+const setName = n => { who.textContent = n || 'you'; };
+const init = readHash(); setName(init); nameIn.value = init;
+nameIn.addEventListener('input', () => setName(nameIn.value.trim()));
+nameIn.addEventListener('change', () => {
+  const slug = nameIn.value.replace(/[^A-Za-z0-9 -]/g, '').trim().replace(/\s+/g, '-');
+  try { if (slug) location.hash = slug; else history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+});
+addEventListener('hashchange', () => { const n = readHash(); if (document.activeElement !== nameIn) { setName(n); nameIn.value = n; } });
+
+/* ---------------- countdown ---------------- */
+const puja = new Date('2026-11-08T18:00:00+05:30').getTime(), over = new Date('2026-11-09T06:00:00+05:30').getTime();
+const pad = n => String(n).padStart(2, '0');
+function tick() {
+  const now = Date.now(); let t;
+  if (now < puja) {
+    const s = Math.floor((puja - now) / 1000);
+    t = `Lakshmi Puja in ${Math.floor(s / 86400)}d ${pad(Math.floor(s % 86400 / 3600))}h ${pad(Math.floor(s % 3600 / 60))}m ${pad(s % 60)}s`;
+  } else if (now < over) t = 'Diwali is tonight. Light every lamp.';
+  else t = 'Deepavali · Sunday 8 November 2026';
+  $('#count').textContent = t;
+}
+tick(); setInterval(tick, 1000);
+
+/* ---------------- music engine (all synthesized) ---------------- */
+const A = { ctx: null, on: false, step: 0, next: 0, timer: null, bpm: 104 };
+function impulse(ctx, dur, decay) {
+  const len = ctx.sampleRate * dur | 0, b = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay); }
+  return b;
+}
+function initAudio() {
+  const C = window.AudioContext || window.webkitAudioContext; if (!C) return false;
+  const c = A.ctx = new C();
+  const comp = c.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4;
+  A.master = c.createGain(); A.master.gain.value = .9; A.master.connect(comp); comp.connect(c.destination);
+  A.dry = c.createGain(); A.dry.connect(A.master);
+  A.rev = c.createConvolver(); A.rev.buffer = impulse(c, 2.8, 2.5);
+  const rg = c.createGain(); rg.gain.value = .35; A.rev.connect(rg); rg.connect(A.master);
+  const nb = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = nb.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  A.noise = nb; return true;
+}
+function out(node, wet) { node.connect(A.dry); if (wet > 0) { const g = A.ctx.createGain(); g.gain.value = wet; node.connect(g); g.connect(A.rev); } }
+function envGain(t, a, peak, dec) {
+  const g = A.ctx.createGain(); g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + dec); return g;
+}
+function noiseHit(t, freq, v, d, type) {
+  const c = A.ctx, s = c.createBufferSource(); s.buffer = A.noise;
+  const f = c.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = f.type === 'bandpass' ? 1.2 : .7;
+  const g = envGain(t, .001, v, d); s.connect(f); f.connect(g); out(g, .25);
+  s.start(t, Math.random() * Math.max(0, 1.9 - d)); s.stop(t + d + .05);
+}
+function pluck(f, t, dur, vol) {           // sitar-ish pluck with a little meend
+  const c = A.ctx, d = Math.max(.45, dur * 1.6);
+  const g = envGain(t, .004, vol || .2, d);
+  const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 6;
+  lp.frequency.setValueAtTime(5200, t); lp.frequency.exponentialRampToValueAtTime(900, t + d);
+  [['sawtooth', 1, 1], ['triangle', 2.003, .5]].forEach(([type, m, v]) => {
+    const o = c.createOscillator(), og = c.createGain(); o.type = type; og.gain.value = v;
+    o.frequency.setValueAtTime(f * m * .94, t); o.frequency.exponentialRampToValueAtTime(f * m, t + .06);
+    o.connect(og); og.connect(lp); o.start(t); o.stop(t + d + .1);
+  });
+  lp.connect(g); out(g, .4);
+}
+function tanpura(f, t) {
+  const c = A.ctx, g = envGain(t, .03, .045, 3.2), lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2200;
+  [1, 1.002, 2.004].forEach(m => { const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f * m; o.connect(lp); o.start(t); o.stop(t + 3.4); });
+  lp.connect(g); out(g, .5);
+}
+function bayan(t, v) {
+  const c = A.ctx, o = c.createOscillator(); o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(58, t + .3);
+  const g = envGain(t, .003, v || .6, .45); o.connect(g); out(g, .15); o.start(t); o.stop(t + .5);
+}
+function dayan(t, f, v, d) {
+  f = f || 540; v = v || .25; d = d || .28; const c = A.ctx;
+  [1, 2.02, 2.96].forEach((m, i) => { const o = c.createOscillator(); o.frequency.value = f * m;
+    const g = envGain(t, .002, v / (i + 1.5), d / (i * .6 + 1)); o.connect(g); out(g, .2); o.start(t); o.stop(t + d + .1); });
+  noiseHit(t, 4000, v * .6, .03);
+}
+function bell(t) {
+  const c = A.ctx;
+  [[1180, .07, 2.5], [2720, .04, 1.5], [4100, .025, .8]].forEach(([f, v, d]) => { const o = c.createOscillator(); o.frequency.value = f;
+    const g = envGain(t, .002, v, d); o.connect(g); out(g, .6); o.start(t); o.stop(t + d + .1); });
+}
+const bols = {
+  dha: t => { bayan(t); dayan(t); }, ge: t => bayan(t, .5), na: t => dayan(t),
+  ti: t => dayan(t, 700, .18, .12), ka: t => noiseHit(t, 1800, .25, .06), dhi: t => { bayan(t, .55); dayan(t, 480, .18, .4); }
+};
+const keherwa = ['dha', 'ge', 'na', 'ti', 'na', 'ka', 'dhi', 'na'];
+const SA = 293.66, SW = { S: 0, R: 2, G: 4, M: 5, P: 7, D: 9, N: 11, "S'": 12, "R'": 14, "G'": 16 };
+const phrA = [['P',2],['D',1],['P',1],['G',2],['R',1],['G',1],['P',2],['D',1],['N',1],["S'",4],['N',1],['D',1],['P',1],['D',1],['P',1],['G',1],['R',1],['G',1],['R',2],['S',2],[null,4]];
+const phrB = [["S'",1],["R'",1],["G'",2],["R'",1],["S'",1],['N',2],['D',1],['N',1],["S'",2],['P',4],['G',1],['P',1],['D',1],['N',1],["S'",2],['N',1],['D',1],['P',4],[null,4]];
+const mel = [];
+[...phrA, ...phrB].forEach(([n, l]) => { mel.push(n === null ? null : { semi: SW[n], len: l }); for (let i = 1; i < l; i++) mel.push(undefined); });
+const tanp = [110, 146.83, 146.83, 73.42];
+function schedule() {
+  const c = A.ctx;
+  while (A.next < c.currentTime + .15) {
+    const spb = 60 / A.bpm / 2, t = A.next, s = A.step;
+    bols[keherwa[s % 8]](t);
+    if (crazy && s % 2 === 1) bayan(t, .45);
+    if (s % 4 === 0) tanpura(tanp[(s / 4) % 4], t);
+    if (s >= 16) { const m = mel[(s - 16) % mel.length]; if (m) pluck(SA * Math.pow(2, m.semi / 12), t, m.len * spb); }
+    if (s % 16 === 0) bell(t);
+    A.next += spb; A.step++;
+  }
+}
+function musicOn() {
+  if (!A.ctx && !initAudio()) return;
+  A.ctx.resume(); A.on = true; A.next = A.ctx.currentTime + .1;
+  clearInterval(A.timer); A.timer = setInterval(schedule, 25);
+  sndBtn.setAttribute('aria-pressed', 'true'); sndBtn.textContent = '♪ Music on';
+}
+function musicOff() {
+  A.on = false; clearInterval(A.timer); if (A.ctx) A.ctx.suspend();
+  sndBtn.setAttribute('aria-pressed', 'false'); sndBtn.textContent = '♪ Music off';
+}
+function boom(vol) {
+  if (!A.on) return; const c = A.ctx, t = c.currentTime + .02; vol = vol || 1;
+  noiseHit(t, 500, .7 * vol, 1.2, 'lowpass');
+  const o = c.createOscillator(); o.frequency.setValueAtTime(90, t); o.frequency.exponentialRampToValueAtTime(30, t + .5);
+  const g = envGain(t, .005, .55 * vol, .6); o.connect(g); out(g, .3); o.start(t); o.stop(t + .7);
+  const n = 8 + Math.random() * 14 | 0; for (let i = 0; i < n; i++) noiseHit(t + .25 + Math.random() * 1.1, 3000 + Math.random() * 4000, .1 * vol, .02, 'highpass');
+}
+function whistle() {
+  if (!A.on) return; const c = A.ctx, t = c.currentTime, o = c.createOscillator();
+  o.frequency.setValueAtTime(700 + Math.random() * 300, t); o.frequency.exponentialRampToValueAtTime(2200, t + .9);
+  const g = envGain(t, .05, .04, .9); o.connect(g); out(g, .3); o.start(t); o.stop(t + 1);
+}
+function pop() { if (A.on) noiseHit(A.ctx.currentTime, 1200 + Math.random() * 1500, .45, .05); }
+document.addEventListener('visibilitychange', () => { if (!A.ctx || !A.on) return; document.hidden ? A.ctx.suspend() : A.ctx.resume(); });
+
+/* ---------------- UI wiring that doesn't need 3D ---------------- */
+const sndBtn = $('#snd'), startBtn = $('#start');
+let crazy = false, started = false;
+sndBtn.addEventListener('click', () => { A.on ? musicOff() : (musicOn(), startShow()); });
+
+/* ---------------- sparkler cursor (2D) ---------------- */
+const sc = $('#spark'), sx = sc.getContext('2d'); let sparks = [];
+function sizeSpark() { const d = Math.min(2, devicePixelRatio || 1); sc.width = innerWidth * d; sc.height = innerHeight * d; sx.setTransform(d, 0, 0, d, 0, 0); }
+let mx = 0, my = 0;
+addEventListener('pointermove', e => {
+  mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1;
+  if (RM) return;
+  for (let i = 0; i < 4; i++) sparks.push({ x: e.clientX, y: e.clientY, vx: rand(-2.5, 2.5), vy: rand(-3, 1), l: 1, h: rand(30, 55) });
+}, { passive: true });
+function drawSparks() {
+  sx.clearRect(0, 0, innerWidth, innerHeight); sx.globalCompositeOperation = 'lighter';
+  for (const p of sparks) { p.x += p.vx; p.y += p.vy; p.vy += .12; p.l -= .03;
+    sx.fillStyle = `hsla(${p.h},100%,${60 + p.l * 30}%,${p.l})`; sx.fillRect(p.x, p.y, 2.2, 2.2); }
+  sparks = sparks.filter(p => p.l > 0); if (sparks.length > 600) sparks.splice(0, sparks.length - 600);
+}
+
+/* ---------------- 3D hero tilt ---------------- */
+const hero = $('#hero'); let tx = 0, ty = 0;
+
+if (!window.THREE) {   // keep the greeting usable even if 3D can't load
+  sizeSpark(); addEventListener('resize', sizeSpark);
+  (function l() { drawSparks(); requestAnimationFrame(l); })();
+  startBtn.addEventListener('click', () => { musicOn(); startBtn.hidden = true; });
+  return;
+}
+
+/* ---------------- three.js scene ---------------- */
+const canvas = $('#gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(2, devicePixelRatio || 1)); renderer.setClearColor(0x0a0517);
+const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x0a0517, .016);
+const cam = new THREE.PerspectiveCamera(55, 1, .1, 400);
+let baseZ = 19;
+function resize() {
+  const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false);
+  cam.aspect = w / h; cam.fov = w < h ? 72 : 55; baseZ = w < h ? 23 : 19; cam.updateProjectionMatrix(); sizeSpark();
+}
+addEventListener('resize', resize); resize();
+
+function texFrom(w, h, draw) { const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h); return new THREE.CanvasTexture(c); }
+const dotTex = texFrom(64, 64, (g, w) => { const r = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(.25, 'rgba(255,255,255,.85)'); r.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = r; g.fillRect(0, 0, w, w); });
+const flameTex = texFrom(64, 128, g => { const r = g.createRadialGradient(32, 92, 2, 32, 78, 56);
+  r.addColorStop(0, 'rgba(255,255,235,1)'); r.addColorStop(.22, 'rgba(255,225,120,1)'); r.addColorStop(.5, 'rgba(255,140,30,.85)'); r.addColorStop(1, 'rgba(255,60,0,0)');
+  g.fillStyle = r; g.beginPath(); g.moveTo(32, 6); g.bezierCurveTo(58, 62, 54, 122, 32, 122); g.bezierCurveTo(10, 122, 6, 62, 32, 6); g.fill(); });
+
+scene.add(new THREE.AmbientLight(0x5a3a7a, .55));
+scene.add(new THREE.HemisphereLight(0x3a2a6a, 0x2a0a05, .45));
+const centerLight = new THREE.PointLight(0xff9a3a, 3, 20, 2); centerLight.position.set(0, 2, 0); scene.add(centerLight);
+const flashLight = new THREE.PointLight(0xffffff, 0, 70, 1.5); scene.add(flashLight);
+
+const floor = new THREE.Mesh(new THREE.CircleGeometry(60, 64), new THREE.MeshStandardMaterial({ color: 0x1c0b16, roughness: .92 }));
+floor.rotation.x = -Math.PI / 2; scene.add(floor);
+
+/* stars */
+{ const n = 1600, p = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) { const th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI * .45, r = rand(90, 140);
+    p[i * 3] = r * Math.sin(ph) * Math.cos(th); p[i * 3 + 1] = r * Math.cos(ph) + 5; p[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th) - 30; }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p, 3));
+  var stars = new THREE.Points(g, new THREE.PointsMaterial({ size: .55, map: dotTex, color: 0xfff1d6, transparent: true, depthWrite: false, opacity: .8 }));
+  scene.add(stars); }
+
+/* diyas */
+const diyaGeo = new THREE.LatheGeometry([[0,0],[.5,.02],[.8,.14],[.97,.34],[.92,.38],[.76,.24],[.42,.15],[0,.12]].map(([x, y]) => new THREE.Vector2(x, y)), 36);
+const clay = new THREE.MeshStandardMaterial({ color: 0xa8461b, roughness: .78, metalness: .05, side: THREE.DoubleSide });
+const gold = new THREE.MeshStandardMaterial({ color: 0xffc04a, emissive: 0x4a2600, metalness: .7, roughness: .3 });
+const rimGeo = new THREE.TorusGeometry(.945, .035, 8, 40);
+const diyas = [];
+function makeDiya(x, z, s) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.scale.setScalar(s);
+  g.add(new THREE.Mesh(diyaGeo, clay));
+  const rim = new THREE.Mesh(rimGeo, gold); rim.rotation.x = Math.PI / 2; rim.position.y = .36; g.add(rim);
+  const flame = new THREE.Sprite(new THREE.SpriteMaterial({ map: flameTex, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+  flame.position.y = .62; flame.scale.set(.32, .64, 1); g.add(flame);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: 0xff8a2a, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: .55 }));
+  glow.position.y = .6; glow.scale.set(2.2, 2.2, 1); g.add(glow);
+  scene.add(g); const d = { g, flame, glow, ph: Math.random() * 10, s, light: null }; diyas.push(d); return d;
+}
+makeDiya(0, 0, 1.8);
+const RING = 10;
+for (let i = 0; i < RING; i++) { const a = i / RING * Math.PI * 2, d = makeDiya(Math.cos(a) * 6.2, Math.sin(a) * 6.2, 1);
+  if (i % 3 === 0) { d.light = new THREE.PointLight(0xff8a2a, 1.4, 9, 2); d.light.position.y = .8; d.g.add(d.light); } }
+
+/* rangoli */
+const palette = [0xff3b5c, 0xffb000, 0x14b8a6, 0xa855f7, 0xffffff, 0xff7a00, 0x22c55e, 0xff4fd8];
+let rangoli = [];
+function buildRangoli() {
+  rangoli.forEach(p => { scene.remove(p); p.geometry.dispose(); p.material.dispose(); }); rangoli = [];
+  const ks = [6, 8, 10, 12, 16, 20], off = Math.random() * palette.length | 0;
+  for (let l = 0; l < 6; l++) {
+    const n = RM ? 500 : 950, p = new Float32Array(n * 3), c = new Float32Array(n * 3);
+    const k = ks[Math.random() * ks.length | 0], r0 = .55 + l * .66, amp = rand(.25, .5);
+    const col = new THREE.Color(palette[(off + l * 3) % palette.length]), col2 = new THREE.Color(palette[(off + l * 3 + 1) % palette.length]);
+    for (let i = 0; i < n; i++) {
+      const th = i / n * Math.PI * 2; let r = r0 + amp * Math.abs(Math.sin(k * th / 2));
+      if (i % 3 === 0) r = r0 + amp * Math.abs(Math.sin(k * th / 2)) * Math.random();
+      p[i * 3] = r * Math.cos(th); p[i * 3 + 1] = .04 + l * .003; p[i * 3 + 2] = r * Math.sin(th);
+      const cc = i % 4 === 0 ? col2 : col; c[i * 3] = cc.r; c[i * 3 + 1] = cc.g; c[i * 3 + 2] = cc.b;
+    }
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(p, 3)); g.setAttribute('color', new THREE.BufferAttribute(c, 3));
+    const pts = new THREE.Points(g, new THREE.PointsMaterial({ size: .13, map: dotTex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+    pts.userData.spin = (l % 2 ? 1 : -1) * (.05 + .03 * l); pts.scale.setScalar(.01);
+    scene.add(pts); rangoli.push(pts);
+  }
+}
+buildRangoli();
+
+/* sky lanterns */
+const LN = RM ? 30 : 70; let lanternActive = RM ? 14 : 26, lanternBoost = 0;
+const lanternGeo = new THREE.CylinderGeometry(.32, .22, .62, 10, 1, true);
+const lanterns = [];
+for (let i = 0; i < LN; i++) {
+  const g = new THREE.Group();
+  g.add(new THREE.Mesh(lanternGeo, new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(rand(.03, .09), 1, .55), transparent: true, opacity: .88, side: THREE.DoubleSide })));
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: 0xff9a3a, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: .7 }));
+  s.scale.set(2, 2, 1); g.add(s);
+  const L = { g, sp: rand(.5, 1.1), ph: rand(0, 9), x: 0, alive: false };
+  respawnLantern(L, i < lanternActive, true); scene.add(g); lanterns.push(L);
+}
+function respawnLantern(L, on, scatter) {
+  L.alive = on; L.g.visible = on; L.x = rand(-28, 28);
+  L.g.position.set(L.x, scatter ? rand(-4, 30) : rand(-6, -2), rand(-34, -6));
+}
+
+/* fireworks particle pool */
+const N = RM ? 2500 : 7000;
+const P = new Float32Array(N * 3), CO = new Float32Array(N * 3), V = new Float32Array(N * 3), BC = new Float32Array(N * 3);
+const LF = new Float32Array(N), MX = new Float32Array(N), DR = new Float32Array(N), GR = new Float32Array(N), FL = new Uint8Array(N);
+for (let i = 0; i < N; i++) P[i * 3 + 1] = -999;
+let ptr = 0;
+const fgeo = new THREE.BufferGeometry();
+fgeo.setAttribute('position', new THREE.BufferAttribute(P, 3)); fgeo.setAttribute('color', new THREE.BufferAttribute(CO, 3));
+const fw = new THREE.Points(fgeo, new THREE.PointsMaterial({ size: .34, map: dotTex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+fw.frustumCulled = false; scene.add(fw);
+function spawn(x, y, z, vx, vy, vz, r, g, b, life, drag, grav, flick) {
+  const i = ptr, j = i * 3; ptr = (ptr + 1) % N;
+  P[j] = x; P[j + 1] = y; P[j + 2] = z; V[j] = vx; V[j + 1] = vy; V[j + 2] = vz;
+  BC[j] = r; BC[j + 1] = g; BC[j + 2] = b; LF[i] = MX[i] = life; DR[i] = drag; GR[i] = grav; FL[i] = flick ? 1 : 0;
+}
+const FWC = [[1, .69, 0], [1, .22, .32], [.1, .9, .8], [1, 1, 1], [.72, .4, 1], [.3, 1, .45], [1, .5, .1], [1, .35, .85]];
+let shake = 0;
+function burst(x, y, z) {
+  const types = ['peony', 'ring', 'willow', 'heart', 'multi', 'crackle', 'peony'];
+  const type = types[Math.random() * types.length | 0];
+  const c = FWC[Math.random() * FWC.length | 0], c2 = FWC[Math.random() * FWC.length | 0];
+  const scale = RM ? .5 : 1;
+  if (type === 'ring') {
+    const n = 180 * scale | 0, ax = new THREE.Vector3(rand(-1, 1), rand(-1, 1), rand(-1, 1)).normalize();
+    const u = new THREE.Vector3(1, 0, 0).cross(ax).normalize(), w = ax.clone().cross(u);
+    for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, sp = 7.5;
+      const vx = (u.x * Math.cos(a) + w.x * Math.sin(a)) * sp, vy = (u.y * Math.cos(a) + w.y * Math.sin(a)) * sp, vz = (u.z * Math.cos(a) + w.z * Math.sin(a)) * sp;
+      spawn(x, y, z, vx, vy, vz, c[0], c[1], c[2], rand(1.3, 1.8), .975, .6, 0); }
+    for (let i = 0; i < n / 2; i++) { const d = new THREE.Vector3(rand(-1, 1), rand(-1, 1), rand(-1, 1)).normalize().multiplyScalar(rand(1, 3));
+      spawn(x, y, z, d.x, d.y, d.z, c2[0], c2[1], c2[2], rand(1, 1.5), .97, .5, 0); }
+  } else if (type === 'heart') {
+    const n = 220 * scale | 0;
+    for (let i = 0; i < n; i++) { const t = i / n * Math.PI * 2, hx = 16 * Math.pow(Math.sin(t), 3), hy = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      spawn(x, y, z, hx * .45, hy * .45, rand(-.4, .4), 1, .25, .45, rand(1.6, 2.1), .955, .25, 0); }
+  } else {
+    const n = (type === 'willow' ? 240 : 280) * scale | 0;
+    for (let i = 0; i < n; i++) {
+      const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2, s = Math.sqrt(1 - u * u);
+      const sp = type === 'willow' ? rand(3.5, 5) : rand(6.2, 7.6);
+      const cc = type === 'multi' ? FWC[Math.random() * FWC.length | 0] : type === 'willow' ? [1, .72, .28] : (i % 5 ? c : c2);
+      spawn(x, y, z, s * Math.cos(th) * sp, u * sp, s * Math.sin(th) * sp, cc[0], cc[1], cc[2],
+        type === 'willow' ? rand(2.6, 3.4) : rand(1.3, 2), type === 'willow' ? .965 : .972, type === 'willow' ? .55 : .7, type === 'crackle');
+    }
+  }
+  for (let i = 0; i < 25; i++) spawn(x, y, z, rand(-1, 1), rand(-1, 1), rand(-1, 1), 1, 1, .9, .35, .9, 0, 0);
+  flashLight.position.set(x, y, z); flashLight.color.setRGB(c[0], c[1], c[2]); flashLight.intensity = 7;
+  shake = Math.max(shake, .25);
+  const dist = Math.hypot(x - cam.position.x, z - cam.position.z);
+  setTimeout(() => boom(Math.min(1, 22 / dist)), Math.min(300, dist * 6));
+}
+const rockets = [];
+function launch(x) {
+  if (x === undefined) x = rand(-12, 12);
+  rockets.push({ p: new THREE.Vector3(x + rand(-1, 1), 0, rand(-10, -3)), v: new THREE.Vector3(rand(-1.2, 1.2), rand(15, 18), 0), ty: rand(8, 14) });
+  whistle();
+}
+function updateRockets(dt) {
+  for (let i = rockets.length - 1; i >= 0; i--) {
+    const r = rockets[i]; r.v.y -= 4.5 * dt; r.p.addScaledVector(r.v, dt);
+    for (let k = 0; k < 3; k++) spawn(r.p.x, r.p.y, r.p.z, rand(-.4, .4), rand(-1.5, 0), rand(-.4, .4), 1, .6, .2, rand(.3, .6), .95, .3, 0);
+    if (r.p.y > r.ty || r.v.y < 3) { burst(r.p.x, r.p.y, r.p.z); rockets.splice(i, 1); }
+  }
+}
+function updateParticles(dt) {
+  for (let i = 0; i < N; i++) {
+    if (LF[i] <= 0) continue;
+    LF[i] -= dt; const j = i * 3;
+    if (LF[i] <= 0) { CO[j] = CO[j + 1] = CO[j + 2] = 0; P[j + 1] = -999; continue; }
+    const dr = Math.pow(DR[i], dt * 60);
+    V[j] *= dr; V[j + 1] = V[j + 1] * dr - 3.4 * GR[i] * dt; V[j + 2] *= dr;
+    P[j] += V[j] * dt; P[j + 1] += V[j + 1] * dt; P[j + 2] += V[j + 2] * dt;
+    let f = Math.pow(LF[i] / MX[i], 1.3);
+    if (FL[i] && f < .55) f *= Math.random() < .5 ? 0 : 1.8;
+    CO[j] = BC[j] * f; CO[j + 1] = BC[j + 1] * f; CO[j + 2] = BC[j + 2] * f;
+  }
+  fgeo.attributes.position.needsUpdate = true; fgeo.attributes.color.needsUpdate = true;
+}
+
+/* 1000-wala ladi */
+function ladi() {
+  const n = RM ? 30 : 90; let k = 0;
+  (function f() {
+    if (k >= n) return;
+    const x = -11 + k / n * 22, z = 4;
+    for (let i = 0; i < 14; i++) spawn(x, .3, z, rand(-3, 3), rand(0, 4.5), rand(-3, 3), 1, rand(.7, 1), rand(.4, .8), rand(.2, .45), .9, .2, 0);
+    flashLight.position.set(x, 1, z); flashLight.color.setRGB(1, .85, .6); flashLight.intensity = 2.5;
+    pop(); shake = Math.max(shake, .1); k++;
+    setTimeout(f, 25 + Math.random() * 45);
+  })();
+}
+
+/* ---------------- interactions ---------------- */
+canvas.addEventListener('pointerdown', e => {
+  const x = (e.clientX / innerWidth - .5) * (innerWidth < innerHeight ? 16 : 28);
+  launch(x);
+});
+function startShow() {
+  if (started) return; started = true; startBtn.hidden = true;
+  for (let i = 0; i < 7; i++) setTimeout(() => launch(-12 + i * 4), i * 180);
+  lanternBoost = 10;
+}
+startBtn.addEventListener('click', () => { musicOn(); startShow(); });
+$('#rocket').addEventListener('click', () => { for (let i = 0; i < 3; i++) setTimeout(() => launch(), i * 160); });
+$('#ladi').addEventListener('click', ladi);
+$('#lanterns').addEventListener('click', () => { lanternBoost = 14; });
+$('#rangoli').addEventListener('click', buildRangoli);
+const crazyBtn = $('#crazy');
+crazyBtn.addEventListener('click', () => {
+  crazy = !crazy; crazyBtn.setAttribute('aria-pressed', String(crazy)); document.body.classList.toggle('crazy', crazy);
+  crazyBtn.textContent = crazy ? 'Calm down' : 'Go crazy';
+  A.bpm = crazy ? 132 : 104;
+  if (!crazy) canvas.style.filter = '';
+  else { if (!A.on) musicOn(); startShow(); ladi(); }
+});
+
+/* ---------------- loop ---------------- */
+const clock = new THREE.Clock(); let auto = 1.2, hue = 0, rangoliTimer = 0, T = 0;
+function loop() {
+  const dt = Math.min(clock.getDelta(), .05); T += dt;
+
+  auto -= dt;
+  if (auto <= 0) { launch(); auto = crazy ? rand(.12, .3) : rand(1.3, 3.2); }
+  if (crazy) { hue = (hue + dt * 120) % 360; if (!RM) canvas.style.filter = `hue-rotate(${hue}deg) saturate(1.35)`;
+    rangoliTimer -= dt; if (rangoliTimer <= 0) { buildRangoli(); rangoliTimer = 2.5; } }
+
+  diyas.forEach(d => {
+    const f = 1 + .14 * Math.sin(T * 13 + d.ph) + .07 * Math.sin(T * 29 + d.ph * 2) + Math.random() * .05;
+    d.flame.scale.set(.32 * (2 - f) * .9 + .05, .64 * f, 1); d.glow.material.opacity = .45 + .15 * f;
+    if (d.light) d.light.intensity = 1.2 * f;
+    if (d.s < 1.5) d.g.position.y = .08 * Math.sin(T * 1.6 + d.ph);
+  });
+  centerLight.intensity = 2.8 + .5 * Math.sin(T * 11) + Math.random() * .3;
+
+  rangoli.forEach((p, i) => {
+    p.rotation.y += p.userData.spin * dt * (crazy ? 7 : 1);
+    const s = p.scale.x; if (s < 1) p.scale.setScalar(Math.min(1, s + dt * (1.2 - i * .1)));
+  });
+
+  if (lanternBoost > 0) lanternBoost -= dt;
+  const target = lanternBoost > 0 ? LN : lanternActive;
+  lanterns.forEach((L, i) => {
+    if (!L.alive) { if (i < target && Math.random() < .02) respawnLantern(L, true, false); return; }
+    L.g.position.y += L.sp * dt * (lanternBoost > 0 ? 1.6 : 1);
+    L.g.position.x = L.x + Math.sin(T * .5 + L.ph) * 1.2;
+    L.g.rotation.z = Math.sin(T * .8 + L.ph) * .08;
+    if (L.g.position.y > 36) respawnLantern(L, i < target, false);
+  });
+
+  stars.rotation.y += dt * .004;
+  flashLight.intensity *= .9;
+  updateRockets(dt); updateParticles(dt);
+
+  const cx = mx * 3, cy = 5 - my * 1.6;
+  cam.position.x += (cx - cam.position.x) * .04; cam.position.y += (cy - cam.position.y) * .04; cam.position.z += (baseZ - cam.position.z) * .05;
+  cam.lookAt(0, 4, 0);
+  if (!RM && shake > .01) { cam.position.x += (Math.random() - .5) * shake; cam.position.y += (Math.random() - .5) * shake; }
+  shake *= .9;
+
+  if (!RM) { tx += (mx - tx) * .06; ty += (my - ty) * .06; hero.style.transform = `rotateY(${tx * 12}deg) rotateX(${-ty * 9}deg)`; }
+
+  renderer.render(scene, cam);
+  drawSparks();
+  requestAnimationFrame(loop);
+}
+cam.position.set(0, 5, baseZ + 8);
+loop();
+})();
+</script>
+
+</body></html>
